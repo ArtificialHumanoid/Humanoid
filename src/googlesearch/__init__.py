@@ -1,9 +1,9 @@
 import warnings
-
 from bs4 import BeautifulSoup
 from requests import get
 from time import sleep
 from .user_agents import get_useragent
+import re
 
 
 def _req(term, results, lang, start, proxies):
@@ -20,18 +20,19 @@ def _req(term, results, lang, start, proxies):
         ),
         proxies=proxies,
     )
+    if __debug__:
+        print(resp.request.url)
     resp.raise_for_status()
     return resp
 
 
 class SearchResult:
-    def __init__(self, url, title, description):
+    def __init__(self, url, title):
         self.url = url
         self.title = title
-        self.description = description
 
     def __repr__(self):
-        return f"SearchResult(url={self.url}, title={self.title}, description={self.description})"
+        return f"SearchResult(url={self.url}, title={self.title})"
 
 
 def search(term, num_results=10, lang="en", proxy=None, advanced=False, sleep_interval=0):
@@ -53,21 +54,26 @@ def search(term, num_results=10, lang="en", proxy=None, advanced=False, sleep_in
 
         # Parse
         soup = BeautifulSoup(resp.text, "html.parser")
-        result_block = soup.find_all("div", attrs={"class": "g"})
+        result_block = soup.find_all("div")
         if not result_block:
             warnings.warn("There are less than the requested number of results.")
             break
         for result in result_block:
-            # Find link, title, description
-            link = result.find("a", href=True)
-            title = result.find("h3")
-            description_box = result.find("div", {"style": "-webkit-line-clamp:2"})
-            if description_box:
-                description = description_box.find("span")
-                if link and title and description:
-                    start += 1
-                    if advanced:
-                        yield SearchResult(link["href"], title.text, description.text)
-                    else:
-                        yield link["href"]
+            if "class" in result.attrs:
+                # Find link, title, description box
+                link = result.find("a", href=True)
+                title = result.find("h3")
+                description_box = result.find("div", {"style": "-webkit-line-clamp:2"})
+                if link and title and description_box:
+                    search_url = "/search?q=" in link.attrs["href"]
+                    if not search_url:
+                        start += 1
+                        if advanced:
+                            yield SearchResult(link["href"], title.text)
+                        else:
+                            yield link["href"]
         sleep(sleep_interval)
+
+
+if __name__ == "__main__":
+    pass
