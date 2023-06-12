@@ -1,3 +1,5 @@
+import requests.exceptions
+import urllib3.exceptions
 import warnings
 from bs4 import BeautifulSoup
 from requests import get
@@ -50,7 +52,11 @@ def search(term, num_results=10, lang="en", proxy=None, advanced=False, sleep_in
     start = 0
     while start < num_results:
         # Send request
-        resp = _req(escaped_term, num_results - start, lang, start, proxies)
+        try:
+            resp = _req(escaped_term, num_results - start, lang, start, proxies)
+        except requests.exceptions.ConnectionError:
+            warnings.warn("Failed to connect.")
+            return
 
         # Parse
         soup = BeautifulSoup(resp.text, "html.parser")
