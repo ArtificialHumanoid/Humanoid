@@ -1,13 +1,11 @@
-name: Types
-
-on: [push, pull_request]
+on: push
 
 jobs:
-  build:
+  test:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-latest]
+        os: [ubuntu-latest, macos-latest, windows-latest]
         python: ['3.7', '3.8', '3.9', '3.10', '3.11']
     steps:
 
@@ -25,4 +23,5 @@ jobs:
 
     - name: Run tests
       run: |
-        make mypy
+        make pytest
+        coverage lcov -o .coverage.lcov

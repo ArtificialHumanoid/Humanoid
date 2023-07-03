@@ -1,3 +1,7 @@
+# Issues, Pull Requests, and Commits
+Issues and, of course, pull requests, are tracked via GitHub.  
+Accordingly, all commit messages should be prefixed with “#” (followed by an issue or pull request numbered reference).
+
 # `googlesearch`
 googlesearch is a Python library for searching Google, easily. googlesearch uses requests and BeautifulSoup4 to scrape Google. 
 
@@ -27,20 +31,16 @@ search("Google", lang="fr")
 ```
 ## googlesearch.search
 ```python
-googlesearch.search(str: term, int: num_results=10, str: lang="en") -> list
+googlesearch.search(term: str, num_results: int = 10, lang: str = "en") -> list
 ```
 
 # `captcha_solver`
 
-[![Test Status](https://github.com/lorien/captcha_solver/actions/workflows/test.yml/badge.svg)](https://github.com/lorien/captcha_solver/actions/workflows/test.yml)
-[![Code Quality](https://github.com/lorien/captcha_solver/actions/workflows/check.yml/badge.svg)](https://github.com/lorien/captcha_solver/actions/workflows/test.yml)
-[![Type Check](https://github.com/lorien/captcha_solver/actions/workflows/mypy.yml/badge.svg)](https://github.com/lorien/captcha_solver/actions/workflows/mypy.yml)
-[![Test Coverage Status](https://coveralls.io/repos/github/lorien/captcha_solver/badge.svg)](https://coveralls.io/github/lorien/captcha_solver)
-[![Documentation Status](https://readthedocs.org/projects/captcha_solver/badge/?version=latest)](https://captcha_solver.readthedocs.org)
+[![Run-Time Status](https://GitHub.Com/ArtificialHumanoid/Humanoid/actions/workflows/Tests.yml/badge.svg)](https://GitHub.Com/ArtificialHumanoid/Humanoid/actions/workflows/Tests.yml/badge.svg)
+[![Lint Status](https://GitHub.Com/ArtificialHumanoid/Humanoid/actions/workflows/Linters.yml/badge.svg)]((https://GitHub.Com/ArtificialHumanoid/Humanoid/actions/workflows/Linters.yml/badge.svg))
+[![Documentation Status](https://readthedocs.org/projects/Humanoid/badge/?version=latest)](https://Humanoid.readthedocs.org)
 
 Univeral API to work with captcha solving services.
-
-Feel free to give feedback in Telegram groups: [@grablab](https://t.me/grablab) and [@grablab\_ru](https://t.me/grablab_ru)
 
 ## Installation
 
@@ -48,7 +48,7 @@ Run: `pip install -U captcha-solver`
 
 ## Twocaptcha Backend Example
 
-Service website is https://2captcha.com?from=3019071
+Service website is https://2captcha.com
 
 ```python
 from captcha_solver import CaptchaSolver
@@ -60,7 +60,7 @@ print(solver.solve_captcha(raw_data))
 
 ## Rucaptcha Backend Example
 
-Service website is https://rucaptcha.com?from=3019071
+Service website is https://rucaptcha.com
 
 ```python
 from captcha_solver import CaptchaSolver
@@ -81,7 +81,7 @@ print(solver.solve_captcha(raw_data))
 
 ## Antigate Backend Example
 
-Service website is http://getcaptchasolution.com/ijykrofoxz
+Service website is http://getcaptchasolution.com
 
 ```python
 from captcha_solver import CaptchaSolver
