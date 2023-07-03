@@ -1,6 +1,4 @@
-name: Linters
-
-on: [push, pull_request]
+on: push
 
 jobs:
   build:
@@ -25,4 +23,4 @@ jobs:
 
     - name: Run tests
       run: |
-        make pylint && make flake8 && make bandit
+        make pylint && make flake8 && make bandit && make mypy

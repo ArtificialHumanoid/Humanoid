@@ -1,15 +1,15 @@
 [project]
-name = "captcha_solver"
-version = "0.1.5"
-
-description = "Universal API to access captcha solving services."
-readme = "README.md"
+name = "Humanoid"
+version = "0.0.1"
 requires-python = ">=3.7"
-license = {"file" = "LICENSE"}
-keywords = []
-authors = [
-    {name = "Gregory Petukhov", email = "lorien@lorien.name"}
+dependencies = []
+maintainers = [
+    {name = "Michael Spece", email = "Michael@Spece.AI"}
 ]
+description = "An SDK for artificial-human interaction with websites, namely Google search and CAPTCHAs."
+readme = "README.md"
+license = {"file" = "LICENSE.md"}
+keywords = []
 # https://pypi.org/pypi?%3Aaction=list_classifiers
 classifiers = [
     "Programming Language :: Python",
@@ -19,7 +19,7 @@ classifiers = [
     "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
-    "License :: OSI Approved :: MIT License",
+    "License :: Other/Proprietary License",
     "Development Status :: 4 - Beta",
     "Intended Audience :: Developers",
     "Operating System :: OS Independent",
@@ -27,17 +27,17 @@ classifiers = [
     "Topic :: Internet :: WWW/HTTP",
     "Typing :: Typed",
 ]
-dependencies = []
 
 [project.urls]
-homepage = "http://github.com/lorien/captcha_solver"
+Homepage = "https://github.com/ArtificialHumanoid/Humanoid"
 
 [build-system]
 requires = ["setuptools"]
 build-backend = "setuptools.build_meta"
 
 [tool.setuptools]
-packages = ["captcha_solver"]
+package-dir = {"" = "src"}
+packages = ["captcha_solver", "googlesearch", "tests"]
 
 [tool.setuptools.package-data]
 "*" = ["py.typed"]
