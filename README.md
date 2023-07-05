@@ -1,37 +1,47 @@
+# Installation
+Run
+```bash
+pip install Humanoid
+```
+
 # Issues, Pull Requests, and Commits
 Issues and, of course, pull requests, are tracked via GitHub.  
 Accordingly, all commit messages should be prefixed with “#” (followed by an issue or pull request numbered reference).
 
 # `googlesearch`
-googlesearch is a Python library for searching Google, easily. googlesearch uses requests and BeautifulSoup4 to scrape Google. 
+googlesearch is a Python library for searching Google, easily. googlesearch uses requests and BeautifulSoup4 to scrape Google.
 
-## Installation
-To install, run the following command:
-```bash
-python3 -m pip install googlesearch-python
-```
 
-## usage
+## Usage
 To get results for a search term, simply use the search function in googlesearch. For example, to get results for "Google" in Google, just run the following program:
 ```python
-from googlesearch import search
-search("Google")
+googlesearch.search("Google")
 ```
 
 ## Additional options
-googlesearch supports a few additional options. By default, googlesearch returns 10 results. This can be changed. To get a 100 results on Google for example, run the following program.
+By default, `googlesearch` returns 10 results. 
+To get a 100 results on Google, for example:
 ```python
-from googlesearch import search
-search("Google", num_results=100)
+googlesearch.search("Google", num_results=100)
 ```
-In addition, you can change the language google searches in. For example, to get results in French run the following program:
+In addition, you can change the language Google searches in.
+For example, to get results in French run the following program:
 ```python
-from googlesearch import search
-search("Google", lang="fr")
+googlesearch.search("Google", lang="fr")
 ```
-## googlesearch.search
+To extract more information, such as the description or the result URL, use an advanced search:
 ```python
-googlesearch.search(term: str, num_results: int = 10, lang: str = "en") -> list
+googlesearch.search("Google", advanced=True)
+```
+which returns `List[SearchResult]` with each result having the properties
+- title
+- url
+- description.
+
+If requesting more than 100 results, googlesearch will send multiple requests to go through the pages.
+To increase the time between these requests, use sleep_interval:
+```python
+googlesearch.search("Google", sleep_interval=5, num_results=200)
 ```
 
 # `captcha_solver`
@@ -41,10 +51,6 @@ googlesearch.search(term: str, num_results: int = 10, lang: str = "en") -> list
 [![Documentation Status](https://readthedocs.org/projects/Humanoid/badge/?version=latest)](https://Humanoid.readthedocs.org)
 
 Univeral API to work with captcha solving services.
-
-## Installation
-
-Run: `pip install -U captcha-solver`
 
 ## Twocaptcha Backend Example
 

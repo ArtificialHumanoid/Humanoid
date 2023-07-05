@@ -1,44 +1,48 @@
+"""Search via Google."""
+import warnings
+from requests import get
 import requests.exceptions
 import urllib3.exceptions
-import warnings
 from bs4 import BeautifulSoup
-from requests import get
 from time import sleep
 from .user_agents import get_useragent
 import re
 
 
-def _req(term, results, lang, start, proxies):
+def _req(term, results, lang, start, proxies, timeout):
     resp = get(
         url="https://www.google.com/search",
         headers={
             "User-Agent": get_useragent()
         },
-        params=dict(
-            q=term,
-            num=results + 2,  # Prevents multiple requests
-            hl=lang,
-            start=start,
-        ),
+        params={
+            "q": term,
+            "num": results + 2,  # Prevents multiple requests
+            "hl": lang,
+            "start": start,
+        },
         proxies=proxies,
+        timeout=timeout,
     )
-    if __debug__:
-        print(resp.request.url)
     resp.raise_for_status()
     return resp
 
 
 class SearchResult:
-    def __init__(self, url, title):
+    def __init__(self, url, title, description=None):
         self.url = url
         self.title = title
+        self.description = description
 
     def __repr__(self):
-        return f"SearchResult(url={self.url}, title={self.title})"
+        return f"SearchResult(url={self.url}, title={self.title}, description={self.description})"
 
 
-def search(term, num_results=10, lang="en", proxy=None, advanced=False, sleep_interval=0):
-    escaped_term = term.replace(" ", "+")
+def search(term, num_results=10, lang="en", proxy=None, advanced=False, sleep_interval=0, timeout=5):
+    """Search via Google."""
+    import urllib.parse
+
+    escaped_term = urllib.parse.quote_plus(term)
 
     # Proxy
     proxies = None
@@ -75,7 +79,7 @@ def search(term, num_results=10, lang="en", proxy=None, advanced=False, sleep_in
                     if not search_url:
                         start += 1
                         if advanced:
-                            yield SearchResult(link["href"], title.text)
+                            yield SearchResult(link["href"], title.text, getattr(description_box, text, None))
                         else:
                             yield link["href"]
         sleep(sleep_interval)
