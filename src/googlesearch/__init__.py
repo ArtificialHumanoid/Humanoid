@@ -38,6 +38,9 @@ class SearchResult:
         return f"SearchResult(url={self.url}, title={self.title}, description={self.description})"
 
 
+search_url_regex = re.compile("/search\?.*q=")
+
+
 def search(term, num_results=10, lang="en", proxy=None, advanced=False, sleep_interval=0, timeout=5):
     """Search via Google."""
     import urllib.parse
@@ -57,7 +60,7 @@ def search(term, num_results=10, lang="en", proxy=None, advanced=False, sleep_in
     while start < num_results:
         # Send request
         try:
-            resp = _req(escaped_term, num_results - start, lang, start, proxies)
+            resp = _req(escaped_term, num_results - start, lang, start, proxies, timeout)
         except requests.exceptions.ConnectionError:
             warnings.warn("Failed to connect.")
             return
@@ -75,7 +78,7 @@ def search(term, num_results=10, lang="en", proxy=None, advanced=False, sleep_in
                 title = result.find("h3")
                 description_box = result.find("div", {"style": "-webkit-line-clamp:2"})
                 if link and title and description_box:
-                    search_url = "/search?q=" in link.attrs["href"]
+                    search_url = search_url_regex.search(link.attrs["href"])
                     if not search_url:
                         start += 1
                         if advanced:

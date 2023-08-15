@@ -1,6 +1,6 @@
 from setuptools import setup
 
-with open("README.md", "r", encoding='UTF-8') as fh:
+with open("../README.md", "r", encoding='UTF-8') as fh:
     long_description = fh.read()
 
 with open("requirements.txt", "r", encoding='UTF-8') as fh:

@@ -35,7 +35,7 @@ requires = ["setuptools"]
 build-backend = "setuptools.build_meta"
 
 [tool.setuptools]
-package-dir = {"" = "src"}
+package-dir = {"" = "../src"}
 packages = ["captcha_solver", "googlesearch", "tests"]
 
 [tool.setuptools.package-data]
