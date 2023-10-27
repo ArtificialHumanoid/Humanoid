@@ -1,3 +1,5 @@
+on: push
+
 jobs:
   pypi-publish:
     name: Upload release to PyPI
@@ -6,7 +8,7 @@ jobs:
       name: pypi
       url: https://pypi.org/p/<your-pypi-project-name>
     permissions:
-      id-token: write  # IMPORTANT: this permission is mandatory for trusted publishing
+      id-token: write
     steps:
     # retrieve your distributions here
 
