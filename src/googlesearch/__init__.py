@@ -9,7 +9,7 @@ from .user_agents import get_useragent
 import re
 
 
-def _req(term, results, lang, start, proxies, timeout):
+def _req(term, results, lang, start, proxies, timeout, verify=True):
     resp = get(
         url="https://www.google.com/search",
         headers={
@@ -23,6 +23,7 @@ def _req(term, results, lang, start, proxies, timeout):
         },
         proxies=proxies,
         timeout=timeout,
+        verify=verify
     )
     resp.raise_for_status()
     return resp
@@ -41,11 +42,11 @@ class SearchResult:
 search_url_regex = re.compile("/search\?.*q=")
 
 
-def search(term, num_results=10, lang="en", proxy=None, advanced=False, sleep_interval=0, timeout=5):
+def search(term, num_results=10, lang="en", proxy=None, advanced=False, sleep_interval=0, timeout=5, verify=True):
     """Search via Google."""
     import urllib.parse
 
-    escaped_term = urllib.parse.quote_plus(term)
+    escaped_term = term
 
     # Proxy
     proxies = None
@@ -60,7 +61,7 @@ def search(term, num_results=10, lang="en", proxy=None, advanced=False, sleep_in
     while start < num_results:
         # Send request
         try:
-            resp = _req(escaped_term, num_results - start, lang, start, proxies, timeout)
+            resp = _req(escaped_term, num_results - start, lang, start, proxies, timeout, verify)
         except requests.exceptions.ConnectionError:
             warnings.warn("Failed to connect.")
             return
