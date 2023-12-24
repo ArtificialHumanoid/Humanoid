@@ -4,6 +4,13 @@ Run
 pip install Humanoid
 ```
 
+or, for the latest,
+
+```bash
+pip install git+https://github.com/ArtificialHumanoid/Humanoid.git#subdirectory=build
+```
+.
+
 # Issues, Pull Requests, and Commits
 Issues and, of course, pull requests, are tracked via GitHub.  
 Accordingly, all commit messages should be prefixed with “#” (followed by an issue or pull request numbered reference).
