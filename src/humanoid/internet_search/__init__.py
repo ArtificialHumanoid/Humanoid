@@ -1,16 +1,45 @@
 """Search via Google."""
+import ssl
 import warnings
-from requests import get
+
+import requests
 import requests.exceptions
-import urllib3.exceptions
+import urllib3
 from bs4 import BeautifulSoup
 from time import sleep
-from .user_agents import get_useragent
+from ..credential_management import get_useragent
 import re
 
 
+class HTTPAdapter(requests.adapters.HTTPAdapter):
+    """
+    Adapt via `ssl_context`.
+    """
+
+    def __init__(self, ssl_context=None, **kwargs):
+        self.ssl_context = ssl_context
+        super().__init__(**kwargs)
+
+    def init_poolmanager(self, connections, maxsize, block=False):
+        self.poolmanager = urllib3.poolmanager.PoolManager(
+            num_pools=connections, maxsize=maxsize, block=block, ssl_context=self.ssl_context)
+
+    @classmethod
+    def legacy_session(cls):
+        context = ssl.create_default_context(ssl.Purpose.SERVER_AUTH)
+        context.options |= 0x4  # OP_LEGACY_SERVER_CONNECT
+        session = requests.session()
+        session.mount('https://', cls(context))
+        return session
+
+
 def _req(term, results, lang, start, proxies, timeout, verify=True):
-    resp = get(
+    if verify:
+        session = requests
+    else:
+        session = HTTPAdapter.legacy_session()
+
+    resp = session.get(
         url="https://www.google.com/search",
         headers={
             "User-Agent": get_useragent()
@@ -44,8 +73,6 @@ search_url_regex = re.compile("/search\?.*q=")
 
 def search(term, num_results=10, lang="en", proxy=None, advanced=False, sleep_interval=0, timeout=5, verify=True):
     """Search via Google."""
-    import urllib.parse
-
     escaped_term = term
 
     # Proxy
