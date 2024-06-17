@@ -1,5 +1,10 @@
 on: push
 
+defaults:
+  run:
+    shell: bash
+    working-directory: ./build
+
 jobs:
   pypi-publish:
     name: Upload release to PyPI
@@ -7,8 +12,6 @@ jobs:
     permissions:
       id-token: write
     steps:
-    # retrieve your distributions here
-
     - name: Publish package distributions to PyPI
       uses: pypa/gh-action-pypi-publish@release/v1
       with:
