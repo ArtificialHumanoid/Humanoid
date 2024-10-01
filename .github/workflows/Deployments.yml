@@ -10,7 +10,7 @@ jobs:
     permissions:
       id-token: write
     steps:
-    - run: ls
+    - uses: actions/checkout@v2
     - name: Publish
       uses: pypa/gh-action-pypi-publish@release/v1
       with:
