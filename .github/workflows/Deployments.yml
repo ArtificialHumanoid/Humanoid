@@ -14,5 +14,6 @@ jobs:
     - name: Publish
       uses: pypa/gh-action-pypi-publish@release/v1
       with:
+        verbose: true
         packages-dir: build/dist
         repository-url: https://test.pypi.org/legacy/
