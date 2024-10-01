@@ -7,7 +7,8 @@ jobs:
       id-token: write
     steps:
     - uses: actions/checkout@v2
-    - uses: pypa/gh-action-pypi-publish@release/v1
+    - if: startsWith(github.ref, 'refs/heads/Dev')
+      uses: pypa/gh-action-pypi-publish@release/v1
       with:
         verbose: true
         packages-dir: build/dist
