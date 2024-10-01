@@ -1,9 +1,7 @@
-on: push
-
-defaults:
-  run:
-    shell: bash
-    working-directory: ./build
+on:
+  push:
+    branches:
+      - Dev
 
 jobs:
   pypi-publish:
@@ -12,7 +10,8 @@ jobs:
     permissions:
       id-token: write
     steps:
-    - name: Publish package distributions to PyPI
+    - name: Publish
       uses: pypa/gh-action-pypi-publish@release/v1
       with:
+        packages-dir: build/
         repository-url: https://test.pypi.org/legacy/
