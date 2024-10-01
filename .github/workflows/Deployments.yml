@@ -15,3 +15,5 @@ jobs:
       with:
         packages-dir: build/dist
         repository-url: https://test.pypi.org/legacy/
+    - run: |
+        ls
