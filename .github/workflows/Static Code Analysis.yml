@@ -1,0 +1,39 @@
+on: push
+
+env:
+  FILES: captcha_solver tests
+
+defaults:
+  run:
+    shell: bash
+    working-directory: ./build
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+        python: ['3.11']
+    steps:
+
+    - uses: actions/checkout@v2
+
+    - name: Install Dependencies
+      run: |
+        echo "$HOME/.local/bin" >> $GITHUB_PATH
+        curl https://bootstrap.pypa.io/get-pip.py | python3
+        pip install -U -r requirements_dev.txt
+        pip install -U -e .   
+
+    - name: Set up Python ${{ matrix.python }}
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ matrix.python }}
+
+    - name: Run tests
+      run: |
+        # pylint -j0 $(FILES)
+        # flake8 -j auto --max-cognitive-complexity=17 $(FILES)
+        # bandit -qc pyproject.toml -r $(FILES)
+        mypy --strict ../src
