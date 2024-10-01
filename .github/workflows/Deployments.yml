@@ -1,7 +1,4 @@
-on:
-  push:
-    branches:
-      - Dev
+on: push
 
 jobs:
   Publish:
