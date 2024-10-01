@@ -4,16 +4,19 @@ on:
       - Dev
 
 jobs:
-  pypi-publish:
-    name: Upload release to PyPI
+  Publish:
     runs-on: ubuntu-latest
     permissions:
       id-token: write
     steps:
     - uses: actions/checkout@v2
-    - name: Publish
-      uses: pypa/gh-action-pypi-publish@release/v1
+    - uses: pypa/gh-action-pypi-publish@release/v1
       with:
         verbose: true
         packages-dir: build/dist
         repository-url: https://test.pypi.org/legacy
+    - if: startsWith(github.ref, 'refs/tags/Prod')
+      uses: pypa/gh-action-pypi-publish@release/v1
+      with:
+        verbose: true
+        packages-dir: build/dist
