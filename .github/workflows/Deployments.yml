@@ -10,10 +10,9 @@ jobs:
     permissions:
       id-token: write
     steps:
+    - run: ls
     - name: Publish
       uses: pypa/gh-action-pypi-publish@release/v1
       with:
         packages-dir: build/dist
         repository-url: https://test.pypi.org/legacy/
-    - run: |
-        ls
