@@ -1,13 +1,15 @@
 # Installation
+<!--
 Run
 ```bash
 pip install Humanoid
 ```
 
 or, for the latest,
+-->
 
 ```bash
-pip install git+https://github.com/ArtificialHumanoid/Humanoid.git#subdirectory=build
+pip install git+https://github.com/ArtificialHumanoid/Humanoid#subdirectory=build
 ```
 .
 

@@ -1,7 +1,7 @@
 
 
 # Copyright Notices
-© 2023 Spece.AI
+© 2023-2024 Spece.AI
 
 This project includes substantial portions of projects covered by MIT licenses;
 a combined MIT license encompassing this prior work can be found at GitHub.Com/ArtificialHumanoid/Humanoid.
