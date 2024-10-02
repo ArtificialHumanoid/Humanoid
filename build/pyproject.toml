@@ -34,9 +34,10 @@ Homepage = "https://github.com/ArtificialHumanoid/Humanoid"
 requires = ["setuptools"]
 build-backend = "setuptools.build_meta"
 
-[tool.setuptools]
-package-dir = {"" = "../src"}
-packages = ["humanoid"]
+[tool.setuptools.packages.find]
+where = ["../src"]
+include = ["humanoiod*"]
+namespaces = false
 
 [tool.setuptools.package-data]
 "*" = ["py.typed"]
