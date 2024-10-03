@@ -1,8 +1,3 @@
-.PHONY: bootstrap venv deps dirs clean pytest test release mypy pylint flake8 bandit check build coverage
-
-FILES_CHECK_MYPY = captcha_solver
-FILES_CHECK_ALL = $(FILES_CHECK_MYPY) tests
-
 bootstrap: venv deps dirs
 
 venv:
@@ -21,9 +16,6 @@ clean:
 	find -name '*.swp' -delete
 	find -name '__pycache__' -delete
 
-pytest:
-	pytest --cov captcha_solver --cov-report term-missing
-
 test:
 	make check \
 	&& make pytest \
@@ -35,18 +27,6 @@ release:
 	&& git push --tags \
 	&& make build \
 	&& twine upload dist/*
-
-mypy:
-	mypy --strict $(FILES_CHECK_MYPY)
-
-pylint:
-	pylint -j0 $(FILES_CHECK_ALL)
-
-flake8:
-	flake8 -j auto --max-cognitive-complexity=17 $(FILES_CHECK_ALL)
-
-bandit:
-	bandit -qc pyproject.toml -r $(FILES_CHECK_ALL)
 
 check:
 	echo "mypy" \
