@@ -12,7 +12,14 @@ jobs:
       matrix:
         os: [ubuntu-latest]
         python: ['3.11']
+    permissions:
+      id-token: write
     steps:
+
+    - uses: qoomon/actions--access-token@v3
+      with:
+        permissions: |
+          contents: read
 
     - uses: actions/checkout@v2
 
