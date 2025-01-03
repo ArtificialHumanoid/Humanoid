@@ -12,6 +12,8 @@ jobs:
       matrix:
         os: [ubuntu-latest]
         python: ['3.11']
+    env:
+      GITHUB_TOKEN: ${{ steps.access-token.outputs.token }}
     permissions:
       id-token: write
     steps:
