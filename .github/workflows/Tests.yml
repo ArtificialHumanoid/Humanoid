@@ -12,13 +12,12 @@ jobs:
       matrix:
         os: [ubuntu-latest]
         python: ['3.11']
-    env:
-      GITHUB_TOKEN: ${{ steps.access-token.outputs.token }}
     permissions:
       id-token: write
     steps:
 
     - uses: qoomon/actions--access-token@v3
+      id: access-token
       with:
         permissions: |
           contents: read
@@ -31,6 +30,8 @@ jobs:
         python-version: ${{ matrix.python }}
 
     - name: Install dependencies
+      env:
+        GITHUB_TOKEN: ${{ steps.access-token.outputs.token }}
       run: |
         echo "$HOME/.local/bin" >> $GITHUB_PATH
         curl https://bootstrap.pypa.io/get-pip.py | python3
