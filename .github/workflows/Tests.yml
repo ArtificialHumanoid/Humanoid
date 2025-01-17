@@ -19,6 +19,7 @@ jobs:
     - uses: qoomon/actions--access-token@v3
       id: access-token
       with:
+        repository: ArtificialHumanoid/Utilities
         permissions: |
           contents: read
 
