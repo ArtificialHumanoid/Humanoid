@@ -22,6 +22,10 @@ jobs:
         repository: ArtificialHumanoid/Utilities
         permissions: |
           contents: read
+    
+    - uses: actions/checkout@v4
+      with:
+        repository: ArtificialHumanoid/Utilities
 
     - uses: actions/checkout@v2
 
