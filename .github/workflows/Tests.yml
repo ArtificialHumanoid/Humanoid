@@ -11,7 +11,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest]
-        python: ['3.11']
+        python: ['3.12']
     permissions:
       id-token: write
     steps:
@@ -23,12 +23,11 @@ jobs:
         permissions: |
           contents: read
     
-    - uses: actions/checkout@v4
+    - uses: actions/checkout
+
+    - uses: actions/checkout
       with:
         repository: ArtificialHumanoid/Utilities
-        token: ${{ steps.access-token.outputs.token }}
-
-    - uses: actions/checkout@v2
 
     - name: Set up Python ${{ matrix.python }}
       uses: actions/setup-python@v4
