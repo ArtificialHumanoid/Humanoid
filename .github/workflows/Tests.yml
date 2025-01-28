@@ -42,7 +42,7 @@ jobs:
       run: |
         echo "$HOME/.local/bin" >> $GITHUB_PATH
         curl https://bootstrap.pypa.io/get-pip.py | python3
-        pip install -U --editable -r requirements_dev.txt
+        pip install -U -r requirements_dev.txt
 
     - name: Run tests
       run: |
