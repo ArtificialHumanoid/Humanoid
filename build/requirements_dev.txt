@@ -14,7 +14,8 @@ mock
 test_server
 pytest-xdist
 git+https://${GITHUB_TOKEN}@github.com/ArtificialHumanoid/Humanoid#subdirectory=build
---editable ./Utilities/build  # git+https://${GITHUB_TOKEN}@github.com/ArtificialHumanoid/Utilities#subdirectory=build
+# --editable ./Utilities/build
+git+https://oauth2:${GITHUB_TOKEN}@github.com/ArtificialHumanoid/Utilities#subdirectory=build
 
 ## Code Quality
 bandit[toml]
