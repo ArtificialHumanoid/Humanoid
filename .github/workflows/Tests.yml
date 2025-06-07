@@ -34,7 +34,6 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ steps.access-token.outputs.token }}
       run: |
-        apt-get install libavformat-dev libavdevice-dev python3-pyaudio
         echo "$HOME/.local/bin" >> $GITHUB_PATH
         curl https://bootstrap.pypa.io/get-pip.py | python3
         pip install -U -r requirements_dev.txt
