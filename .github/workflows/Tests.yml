@@ -33,11 +33,11 @@ jobs:
     - name: Install dependencies
       env:
         GITHUB_TOKEN: ${{ steps.access-token.outputs.token }}
-      run: |
+      run: |  # Cf. `Tests.yml` in `Utilities`.
         echo "$HOME/.local/bin" >> $GITHUB_PATH
         curl https://bootstrap.pypa.io/get-pip.py | python3
         pip install -U -r requirements_dev.txt
 
     - name: Run tests
       run: |
-        python src_and_submodules/utilities/meta/testing_of/packages/test/importation/files.py
+        python -m utilities.meta.testing_of.packages.test.importation.files
