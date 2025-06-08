@@ -1,30 +1,32 @@
 import os
 
-from setuptools import setup
-from setuptools.config import expand
 
-if __debug__:
-    print(os.getcwd())
+if __name__ == "__main__":
+    from setuptools import setup
+    from setuptools.config import expand
 
-with open("../README.md", "r", encoding="UTF-8") as fh:
-    long_description = fh.read()
+    if __debug__:
+        print(os.getcwd())
 
-with open("requirements.txt", "r", encoding="UTF-8'") as fh:
-    requirements = fh.read().split("\n")
+    with open("../README.md", "r", encoding="UTF-8") as fh:
+        long_description = fh.read()
 
-# Monkey patch.
+    with open("requirements.txt", "r", encoding="UTF-8'") as fh:
+        requirements = fh.read().split("\n")
 
-
-def _assert_local(_, __):
-    return True
+    # Monkey patch.
 
 
-expand._assert_local = _assert_local
+    def _assert_local(_, __):
+        return True
 
 
-setup(
-    version="0.0.1",
-    long_description=long_description,
-    long_description_content_type="text/markdown",
-    install_requires=[requirements],
-)
+    expand._assert_local = _assert_local
+
+
+    setup(
+        version="0.0.1",
+        long_description=long_description,
+        long_description_content_type="text/markdown",
+        install_requires=[requirements],
+    )
