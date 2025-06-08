@@ -17,14 +17,23 @@ jobs:
         python: ['3.11']
     steps:
 
-    - uses: actions/checkout@v2
+    - uses: qoomon/actions--access-token@v3
+      id: access-token
+      with:
+        repository: ArtificialHumanoid/Utilities
+        permissions: |
+          contents: read
+
+    - uses: actions/checkout@v4
 
     - name: Install Dependencies
+      env:
+        GITHUB_TOKEN: ${{ steps.access-token.outputs.token }}
       run: |
         echo "$HOME/.local/bin" >> $GITHUB_PATH
         curl https://bootstrap.pypa.io/get-pip.py | python3
         pip install -U -r requirements_dev.txt
-        pip install -U -e .   
+        pip install -U -e .
 
     - name: Set up Python ${{ matrix.python }}
       uses: actions/setup-python@v4
