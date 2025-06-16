@@ -34,7 +34,7 @@ jobs:
       run: |
         echo "$HOME/.local/bin" >> $GITHUB_PATH
         curl https://bootstrap.pypa.io/get-pip.py | python3
-        pip install -U -r requirements_dev.txt
+        pip install -U -r requirements.txt
         pip install -U -e .
 
     - name: Set up Python ${{ matrix.python }}
