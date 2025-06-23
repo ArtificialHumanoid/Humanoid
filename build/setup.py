@@ -41,7 +41,7 @@ if __name__ == "__main__":
             pass
         return result
 
-    requirements = load_requirements("requirements.txt")
+    requirements = load_requirements("requirements_run.txt")
 
     # Monkey patch.
 

@@ -1,4 +1,2 @@
 -r requirements_dev.txt
-
-beautifulsoup4>=4.9
-requests>=2.20
+-r requirements_run.txt
