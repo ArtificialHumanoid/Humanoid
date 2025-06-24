@@ -5,7 +5,7 @@ from unittest import TestCase
 
 from test_server import Response, TestServer
 
-from captcha_solver import CaptchaSolver, error
+from humanoid.captcha_solver import CaptchaSolver, error
 
 # These timings means the solver will do only
 # one attempt to submit captcha and
