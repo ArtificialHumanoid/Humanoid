@@ -3,7 +3,7 @@ from __future__ import annotations
 from abc import abstractmethod
 from typing import Any
 
-from ..network import NetworkRequest, NetworkResponse
+from humanoid.captcha_solver.network import NetworkRequest, NetworkResponse
 
 
 class ServiceBackend:

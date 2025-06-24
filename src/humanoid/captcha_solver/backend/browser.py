@@ -6,8 +6,8 @@ import time
 import webbrowser
 from typing import Any
 
-from ..network import NetworkRequest, NetworkResponse
-from .base import ServiceBackend
+from humanoid.captcha_solver.network import NetworkRequest, NetworkResponse
+from humanoid.captcha_solver.backend.base import ServiceBackend
 
 
 class BrowserBackend(ServiceBackend):

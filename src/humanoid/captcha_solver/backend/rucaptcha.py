@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from .twocaptcha import TwocaptchaBackend
+from humanoid.captcha_solver.backend.twocaptcha import TwocaptchaBackend
 
 
 class RucaptchaBackend(TwocaptchaBackend):

@@ -7,7 +7,7 @@ from bs4 import BeautifulSoup
 from time import sleep
 
 from humanoid.internet_search import HTTPAdapter
-from ..credential_management import get_useragent
+from humanoid.credential_management import get_useragent
 import re
 
 

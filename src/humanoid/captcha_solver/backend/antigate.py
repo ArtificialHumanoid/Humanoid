@@ -4,9 +4,9 @@ from base64 import b64encode
 from typing import Any
 from urllib.parse import urlencode, urljoin
 
-from ..error import BalanceTooLow, CaptchaServiceError, ServiceTooBusy, SolutionNotReady
-from ..network import NetworkRequest, NetworkResponse
-from .base import ServiceBackend
+from humanoid.captcha_solver.error import BalanceTooLow, CaptchaServiceError, ServiceTooBusy, SolutionNotReady
+from humanoid.captcha_solver.network import NetworkRequest, NetworkResponse
+from humanoid.captcha_solver.backend.base import ServiceBackend
 
 SOFTWARE_ID = 901
 

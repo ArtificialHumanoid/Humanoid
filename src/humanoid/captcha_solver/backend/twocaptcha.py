@@ -1,7 +1,7 @@
 from typing import Any
 
-from ..network import NetworkRequest
-from .antigate import AntigateBackend
+from humanoid.captcha_solver.network import NetworkRequest
+from humanoid.captcha_solver.backend.antigate import AntigateBackend
 
 SOFTWARE_ID = 2373
 
