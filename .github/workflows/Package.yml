@@ -7,6 +7,7 @@ on:
 
 jobs:
   Publish:
+    needs: Version
     runs-on: ubuntu-latest
     permissions:
       id-token: write
@@ -32,17 +33,17 @@ jobs:
     - name: Increment patch version
       run: |
         python - <<'PY'
-import re, pathlib
-p = pathlib.Path('build/setup.py')
-text = p.read_text()
-m = re.search(r'version="(\d+)\.(\d+)\.(\d+)"', text)
-major, minor, patch = map(int, m.groups())
-patch += 1
-new_version=f"{major}.{minor}.{patch}"
-new_text=re.sub(r'version="\d+\.\d+\.\d+"', f'version="{new_version}"', text)
-p.write_text(new_text)
-print(new_version)
-PY
+        import re, pathlib
+        p = pathlib.Path('build/setup.py')
+        text = p.read_text()
+        m = re.search(r'version="(\d+)\.(\d+)\.(\d+)"', text)
+        major, minor, patch = map(int, m.groups())
+        patch += 1
+        new_version=f"{major}.{minor}.{patch}"
+        new_text=re.sub(r'version="\d+\.\d+\.\d+"', f'version="{new_version}"', text)
+        p.write_text(new_text)
+        print(new_version)
+        PY
     - name: Commit and push version bump
       uses: stefanzweifel/git-auto-commit-action@v4
       with:
