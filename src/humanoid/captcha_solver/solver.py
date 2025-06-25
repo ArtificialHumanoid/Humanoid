@@ -10,18 +10,18 @@ from urllib.error import URLError
 
 from typing_extensions import TypedDict
 
-from .backend.antigate import AntigateBackend
-from .backend.base import ServiceBackend
-from .backend.browser import BrowserBackend
-from .backend.rucaptcha import RucaptchaBackend
-from .backend.twocaptcha import TwocaptchaBackend
-from .error import (
+from humanoid.captcha_solver.backend.antigate import AntigateBackend
+from humanoid.captcha_solver.backend.base import ServiceBackend
+from humanoid.captcha_solver.backend.browser import BrowserBackend
+from humanoid.captcha_solver.backend.rucaptcha import RucaptchaBackend
+from humanoid.captcha_solver.backend.twocaptcha import TwocaptchaBackend
+from humanoid.captcha_solver.error import (
     InvalidServiceBackend,
     ServiceTooBusy,
     SolutionNotReady,
     SolutionTimeoutError,
 )
-from .network import request
+from humanoid.captcha_solver.network import request
 
 LOGGER = logging.getLogger("captcha_solver")
 BACKEND_ALIAS: dict[str, type[ServiceBackend]] = {

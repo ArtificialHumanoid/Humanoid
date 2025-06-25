@@ -4,7 +4,7 @@ from unittest import TestCase
 
 from mock import patch
 
-from captcha_solver import CaptchaSolver
+from humanoid.captcha_solver import CaptchaSolver
 
 
 class BrowserTestCase(TestCase):

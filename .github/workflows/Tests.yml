@@ -8,13 +8,22 @@ defaults:
 jobs:
   test:
     runs-on: ${{ matrix.os }}
+    permissions:
+      id-token: write
     strategy:
       matrix:
         os: [ubuntu-latest]
-        python: ['3.11']
+        python: ['3.12']
     steps:
 
-    - uses: actions/checkout@v2
+    - uses: qoomon/actions--access-token@v3
+      id: access-token
+      with:
+        repository: ArtificialHumanoid/Utilities
+        permissions: |
+          contents: read
+    
+    - uses: actions/checkout@v4
 
     - name: Set up Python ${{ matrix.python }}
       uses: actions/setup-python@v4
@@ -22,12 +31,50 @@ jobs:
         python-version: ${{ matrix.python }}
 
     - name: Install dependencies
-      run: |
+      env:
+        GITHUB_TOKEN: ${{ steps.access-token.outputs.token }}
+      run: |  # Cf. `Tests.yml` in `Utilities`.
         echo "$HOME/.local/bin" >> $GITHUB_PATH
         curl https://bootstrap.pypa.io/get-pip.py | python3
-        pip install -U -r requirements_dev.txt
-        pip install -U -e .
+        pip install -r requirements.txt
 
     - name: Run tests
       run: |
-        python -c "from utilities.meta.testing_of.packages.test.importation import import_all"
+        python -m utilities.meta.testing_of.packages.test.importation.files
+
+  test_install_package:
+    runs-on: ${{ matrix.os }}
+    permissions:
+      id-token: write
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+        python: ['3.12']
+    steps:
+
+    - uses: qoomon/actions--access-token@v3
+      id: access-token
+      with:
+        repository: ArtificialHumanoid/Utilities
+        permissions: |
+          contents: read
+
+    - uses: actions/checkout@v4
+
+    - name: Set up Python ${{ matrix.python }}
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ matrix.python }}
+
+    - name: Install Humanoid
+      env:
+        GITHUB_TOKEN: ${{ steps.access-token.outputs.token }}
+      run: |  # Cf. `Tests.yml` in `Utilities`.
+        echo "$HOME/.local/bin" >> $GITHUB_PATH
+        curl https://bootstrap.pypa.io/get-pip.py | python3
+        pip install .
+        pip install -r requirements_dev.txt
+
+    - name: Run tests
+      run: |
+        python -m utilities.meta.testing_of.packages.test.importation.files

@@ -1,4 +1,4 @@
-# Requirements for Development as Opposed to Installation
+# Requirements for Development as Opposed to Mere Installation
 pip
 nodejs
 bumpversion
@@ -13,6 +13,8 @@ pytest-cov
 mock
 test_server
 pytest-xdist
+git+https://${GITHUB_TOKEN}@github.com/ArtificialHumanoid/Humanoid#subdirectory=build
+git+https://oauth2:${GITHUB_TOKEN}@github.com/ArtificialHumanoid/Utilities#subdirectory=build
 
 ## Code Quality
 bandit[toml]
