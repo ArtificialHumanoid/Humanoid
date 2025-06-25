@@ -105,3 +105,6 @@ solver = CaptchaSolver('antigate', api_key='ANTIGATE_KEY')
 raw_data = open('captcha.png', 'rb').read()
 print(solver.solve_captcha(raw_data))
 ```
+
+## Branching and Publication
+Publication to package repositories only occurs on the `Dev` and `Prod` branches using the `Package` workflow. When `Exploration` is merged into `Dev`, this workflow automatically increments the patch version.
