@@ -28,6 +28,8 @@ jobs:
   Version:
     if: github.event_name == 'pull_request' && github.event.pull_request.merged == true && github.event.pull_request.head.ref == 'Exploration'
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
     - uses: actions/checkout@v3
     - name: Increment patch version
@@ -48,4 +50,5 @@ jobs:
       uses: stefanzweifel/git-auto-commit-action@v4
       with:
         commit_message: '#3 Bump version after merge of Exploration into Dev.'
+        branch: Dev
 
