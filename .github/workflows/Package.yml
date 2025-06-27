@@ -23,6 +23,7 @@ jobs:
         verbose: true
         packages-dir: build/dist
         repository-url: https://test.pypi.org/legacy
+        attestations: false
     - if: startsWith(github.ref, 'refs/heads/Prod')
       uses: pypa/gh-action-pypi-publish@release/v1
       with:
