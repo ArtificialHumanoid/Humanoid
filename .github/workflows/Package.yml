@@ -58,4 +58,5 @@ jobs:
       with:
         commit_message: '#3 Bump version after merge of Exploration into Dev.'
         branch: Dev
-        token: ${{ steps.access-token.outputs.token }}
+      env:
+        GITHUB_TOKEN: ${{ steps.access-token.outputs.token }}
