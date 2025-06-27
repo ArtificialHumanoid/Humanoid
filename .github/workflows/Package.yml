@@ -4,13 +4,13 @@ on:
   pull_request:
     branches: [Dev]
     types: [closed]
+permissions:
+  id-token: write
 
 jobs:
   Publish:
     needs: Version
     runs-on: ubuntu-latest
-    permissions:
-      id-token: write
     steps:
     - uses: actions/checkout@v2
     - if: startsWith(github.ref, 'refs/heads/Dev')
@@ -56,4 +56,3 @@ jobs:
         commit_message: '#3 Bump version after merge of Exploration into Dev.'
         branch: Dev
         token: ${{ steps.access-token.outputs.token }}
-
