@@ -39,6 +39,8 @@ jobs:
         permissions: |
           contents: write
     - uses: actions/checkout@v3
+      with:
+        token: ${{ steps.access-token.outputs.token }}
     - name: Increment patch version
       run: |
         python - <<'PY'
@@ -58,5 +60,3 @@ jobs:
       with:
         commit_message: '#3 Bump version after merge of Exploration into Dev.'
         branch: Dev
-      env:
-        GITHUB_TOKEN: ${{ steps.access-token.outputs.token }}
