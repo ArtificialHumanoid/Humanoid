@@ -29,6 +29,7 @@ jobs:
     if: github.event_name == 'pull_request' && github.event.pull_request.merged == true && github.event.pull_request.head.ref == 'Exploration'
     runs-on: ubuntu-latest
     permissions:
+      id-token: write
       contents: read
     steps:
     - uses: qoomon/actions--access-token@v3
