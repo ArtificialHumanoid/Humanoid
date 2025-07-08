@@ -1,8 +1,9 @@
 name: Package
 on:
   pull_request:
-    branches: [Dev]
-    types: [merged]
+    branches: [Exploration, Dev]
+  pull_request_target:
+    branches: [Dev, Prod]
 permissions:
   id-token: write
 
@@ -30,7 +31,7 @@ jobs:
         packages-dir: build/dist
 
   Version:
-    if: github.event.pull_request.head.ref == 'Exploration'
+    if: github.event.pull_request.pull_request.merged == true
     runs-on: ubuntu-latest
     permissions:
       id-token: write
