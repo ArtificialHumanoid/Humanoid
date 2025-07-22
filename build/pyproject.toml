@@ -5,8 +5,8 @@ maintainers = [
     {name = "Michael Spece", email = "Michael@Spece.AI"}
 ]
 description = "An SDK for artificial-human interaction with websites, namely Google search and CAPTCHAs."
-readme = "../README.md"
-license = {"file" = "../LICENSE.md"}
+readme = "README.md"
+license-files = ["LICENSE.md"]
 keywords = []
 # https://pypi.org/pypi?%3Aaction=list_classifiers
 classifiers = [
@@ -33,6 +33,10 @@ Homepage = "https://github.com/ArtificialHumanoid/Humanoid"
 [build-system]
 requires = ["setuptools>=64", "setuptools-scm>=8"]
 build-backend = "setuptools.build_meta"
+
+[tool.setuptools_scm]
+relative_to = "pyproject.toml"
+root = ".."
 
 [tool.setuptools.package-data]
 "*" = ["py.typed"]
