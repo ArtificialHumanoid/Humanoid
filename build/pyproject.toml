@@ -41,6 +41,9 @@ root = ".."
 [tool.setuptools.package-data]
 "*" = ["py.typed"]
 
+[tool.setuptools.packages.find]
+where = ["../src"]
+
 [tool.isort]
 profile = "black"
 line_length = 88
