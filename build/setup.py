@@ -10,6 +10,7 @@ if __name__ == "__main__":
         Attempt an editable install from the local repository if available;
         otherwise fall back to installing from the remote source.
         """
+        from pathlib import Path
         from importlib import reload
         import site
 
