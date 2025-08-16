@@ -34,6 +34,8 @@ if __name__ == "__main__":
             "Utilities @ git+https://github.com/ArtificialHumanoid/Utilities.git#subdirectory=build",
         ])
         reload(site)
+    
+    install_utilities()
 
     from utilities.management_of.resources.packages.installation import Requirements
 
