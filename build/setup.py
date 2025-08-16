@@ -13,6 +13,7 @@ if __name__ == "__main__":
         from pathlib import Path
         from importlib import reload
         import site
+        from pip._internal.cli.main import main as pip_main
 
         # As in `Utilities`'s `setup`
         build_dir = "build"
