@@ -2,6 +2,39 @@ if __name__ == "__main__":
     import os
     from setuptools import setup
     from setuptools.config import expand
+
+    def install_utilities() -> None:
+        """
+        Bootstrap installation of the Utilities package.
+
+        Attempt an editable install from the local repository if available;
+        otherwise fall back to installing from the remote source.
+        """
+        from importlib import reload
+        import site
+
+        # As in `Utilities`'s `setup`
+        build_dir = "build"
+        local_repo = Path(__file__).resolve()
+        while local_repo.name != build_dir:
+            local_repo = local_repo.parent
+        local_repo = local_repo.parent
+        local_repo = local_repo / "src_and_submodules" / "monorepo" / "Utilities" /"build"
+        if local_repo.exists():
+            pip_args = ["install", "--break-system-packages", "--editable", str(local_repo)]
+            result = pip_main(pip_args)
+            if result == 0:
+                return
+        elif __debug__:
+            from warnings import warn
+            warn(local_repo)
+        pip_main([
+            "install",
+            "--break-system-packages",
+            "Utilities @ git+https://github.com/ArtificialHumanoid/Utilities.git#subdirectory=build",
+        ])
+        reload(site)
+
     from utilities.management_of.resources.packages.installation import Requirements
 
     requirements = Requirements(requirements="./requirements_run.txt")
