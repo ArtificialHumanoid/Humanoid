@@ -1,9 +1,47 @@
-import os
-
-
 if __name__ == "__main__":
+    import os
     from setuptools import setup
     from setuptools.config import expand
+
+    def install_utilities() -> None:
+        """
+        Bootstrap installation of the Utilities package.
+
+        Attempt an editable install from the local repository if available;
+        otherwise fall back to installing from the remote source.
+        """
+        from pathlib import Path
+        from importlib import reload
+        import site
+        from pip._internal.cli.main import main as pip_main
+
+        # As in `Utilities`'s `setup`
+        build_dir = "build"
+        local_repo = Path(__file__).resolve()
+        while local_repo.name != build_dir:
+            local_repo = local_repo.parent
+        local_repo = local_repo.parent
+        local_repo = local_repo / "src_and_submodules" / "monorepo" / "Utilities" /"build"
+        if local_repo.exists():
+            pip_args = ["install", "--break-system-packages", "--editable", str(local_repo)]
+            result = pip_main(pip_args)
+            if result == 0:
+                return
+        elif __debug__:
+            from warnings import warn
+            warn(local_repo)
+        pip_main([
+            "install",
+            "--break-system-packages",
+            "Utilities @ git+https://github.com/ArtificialHumanoid/Utilities.git#subdirectory=build",
+        ])
+        reload(site)
+    
+    install_utilities()
+
+    from utilities.management_of.resources.packages.installation import Requirements
+
+    requirements = Requirements(requirements="./requirements_run.txt")
 
     if __debug__:
         print(os.getcwd())
@@ -17,31 +55,7 @@ if __name__ == "__main__":
     except FileNotFoundError:
         long_description = ""
 
-    def load_requirements(path):
-        """Recursively load requirements from the given file."""
-        result = []
-        full_path = os.path.join(base_dir, path) if not os.path.isabs(path) else path
-        try:
-            with open(full_path, "r", encoding="UTF-8") as req_file:
-                for line in req_file:
-                    line = line.strip()
-                    if not line or line.startswith("#"):
-                        continue
-                    if line.startswith("-r"):
-                        nested = line[2:].strip()
-                        nested_path = os.path.join(os.path.dirname(full_path), nested)
-                        result.extend(load_requirements(nested_path))
-                    else:
-                        line = os.path.expandvars(line)
-                        if line.startswith("git+"):
-                            # Skip VCS dependencies for install_requires
-                            continue
-                        result.append(line)
-        except FileNotFoundError:
-            pass
-        return result
-
-    requirements = load_requirements("requirements_run.txt")
+    requirements = requirements.load_requirements()
 
     # Monkey patch.
 
