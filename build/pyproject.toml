@@ -30,9 +30,6 @@ dynamic = ["version", "dependencies"]
 [project.urls]
 Homepage = "https://github.com/ArtificialHumanoid/Humanoid"
 
-[build-system]
-build-backend = "setuptools.build_meta"
-
 [tool.setuptools_scm]
 relative_to = "pyproject.toml"
 root = ".."
