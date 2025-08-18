@@ -4,11 +4,13 @@ if __name__ == "__main__":
     from pip._internal.cli.main import main as pip_main
 
     def pip(*args):
+        from importlib import reload
         return pip_main([
             "install",
             "--break-system-packages",
-            *args,
+            *args
         ])
+        reload(site)
 
 
     try:
@@ -25,7 +27,6 @@ if __name__ == "__main__":
         otherwise fall back to installing from the remote source.
         """
         from pathlib import Path
-        from importlib import reload
         import site
 
         # As in `Utilities`'s `setup`
@@ -43,7 +44,6 @@ if __name__ == "__main__":
             from warnings import warn
             warn(local_repo)
         pip("Utilities @ git+https://github.com/ArtificialHumanoid/Utilities.git#subdirectory=build")
-        reload(site)
 
     install_utilities()
     from utilities.management_of.resources.packages.installation import Requirements
