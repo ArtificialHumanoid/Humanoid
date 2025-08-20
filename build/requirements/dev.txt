@@ -1,5 +1,4 @@
 # Requirements for Development as Opposed to Mere Installation
-pip
 nodejs
 bumpversion
 pytest
