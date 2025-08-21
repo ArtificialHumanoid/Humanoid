@@ -64,7 +64,7 @@ if __name__ == "__main__":
 
     install_utilities()
     from utilities.management_of.resources.packages.installation import Requirements
-    requirements, unparseable = Requirements(requirements="./requirements/.txt").load_requirements()
+    requirements, unparseable = Requirements(requirements="./requirements/build.txt").load_requirements()
 
     # Differ from `Monorepo`
 

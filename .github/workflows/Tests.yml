@@ -36,7 +36,9 @@ jobs:
       run: |  # Cf. `Tests.yml` in `Utilities`.
         echo "$HOME/.local/bin" >> $GITHUB_PATH
         curl https://bootstrap.pypa.io/get-pip.py | python3
-        pip install --no-build-isolation -r requirements/.txt
+        pip install --no-build-isolation -r requirements/build.txt
+        pip install --no-build-isolation -r requirements/run.txt
+        pip install --no-build-isolation -r requirements/dev.txt
 
     - name: Run tests
       run: |
