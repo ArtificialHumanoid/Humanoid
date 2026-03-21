@@ -27,7 +27,7 @@ if __name__ == "__main__":
 
     def install_utilities() -> None:
         """
-        Bootstrap installation of the Utilities package.
+        Bootstrap installation of the Utilities package, e.g. into a build environment (which would not necessarily package Utilities with Humanoid).
 
         Attempt an editable install from the local repository if available;
         otherwise fall back to installing from the remote source.
