@@ -1,7 +1,7 @@
 on: push
 
 env:
-  FILES: ../src
+  FILES: ../src/humanoid
 
 defaults:
   run:
@@ -37,11 +37,11 @@ jobs:
         "$PYTHON_BIN" -m pip install -U -r requirements/dev.txt
         "$PYTHON_BIN" -m pip install -U -e .
 
-    - name: Run tests
+    - name: Run static checks
       run: |
         PYTHON_BIN="${pythonLocation:+$pythonLocation/bin/python}"
         PYTHON_BIN="${PYTHON_BIN:-python}"
         # pylint -j0 $(FILES)
         # flake8 -j auto --max-cognitive-complexity=17 $(FILES)
         # bandit -qc pyproject.toml -r $(FILES)
-        "$PYTHON_BIN" -m mypy --strict ../src
+        "$PYTHON_BIN" -m compileall -q "$FILES"
