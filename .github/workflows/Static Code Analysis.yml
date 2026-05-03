@@ -1,7 +1,7 @@
 on: push
 
 env:
-  FILES: captcha_solver tests
+  FILES: ../src
 
 defaults:
   run:
@@ -12,39 +12,36 @@ jobs:
   build:
     runs-on: ${{ matrix.os }}
     permissions:
-      id-token: write
+      contents: read
     strategy:
       matrix:
         os: [ubuntu-latest]
         python: ['3.11']
     steps:
 
-    - uses: qoomon/actions--access-token@v3
-      id: access-token
-      with:
-        repository: ArtificialHumanoid/Utilities
-        permissions: |
-          contents: read
-
     - uses: actions/checkout@v4
 
-    - name: Install Dependencies
-      env:
-        GITHUB_TOKEN: ${{ steps.access-token.outputs.token }}
-      run: |
-        echo "$HOME/.local/bin" >> $GITHUB_PATH
-        curl https://bootstrap.pypa.io/get-pip.py | python3
-        pip install -U -r requirements.txt
-        pip install -U -e .
-
     - name: Set up Python ${{ matrix.python }}
-      uses: actions/setup-python@v4
+      uses: actions/setup-python@v5
       with:
         python-version: ${{ matrix.python }}
 
+    - name: Install Dependencies
+      run: |
+        PYTHON_BIN="${pythonLocation:+$pythonLocation/bin/python}"
+        PYTHON_BIN="${PYTHON_BIN:-python}"
+        echo "$HOME/.local/bin" >> $GITHUB_PATH
+        "$PYTHON_BIN" -m pip install --upgrade pip
+        "$PYTHON_BIN" -m pip install -U -r requirements/build.txt
+        "$PYTHON_BIN" -m pip install -U -r requirements/run.txt
+        "$PYTHON_BIN" -m pip install -U -r requirements/dev.txt
+        "$PYTHON_BIN" -m pip install -U -e .
+
     - name: Run tests
       run: |
+        PYTHON_BIN="${pythonLocation:+$pythonLocation/bin/python}"
+        PYTHON_BIN="${PYTHON_BIN:-python}"
         # pylint -j0 $(FILES)
         # flake8 -j auto --max-cognitive-complexity=17 $(FILES)
         # bandit -qc pyproject.toml -r $(FILES)
-        mypy --strict ../src
+        "$PYTHON_BIN" -m mypy --strict ../src

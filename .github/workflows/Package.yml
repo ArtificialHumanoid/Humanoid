@@ -1,67 +1,59 @@
 name: Package
+
 on:
   pull_request:
     branches: [Exploration, Dev]
-  pull_request_target:
+  push:
     branches: [Dev, Prod]
+  workflow_dispatch:
+
 permissions:
-  id-token: write
+  contents: read
 
 jobs:
-  Publish:
-    needs: Version
+  Build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: "3.12"
     - name: Build distribution packages
       run: |
-        python -m pip install --upgrade build
-        python -m build build --sdist --wheel --outdir build/dist
-    - if: startsWith(github.ref, 'refs/heads/Dev')
+        PYTHON_BIN="${pythonLocation:+$pythonLocation/bin/python}"
+        PYTHON_BIN="${PYTHON_BIN:-python}"
+        "$PYTHON_BIN" -m pip install --upgrade pip build
+        "$PYTHON_BIN" -m build build --sdist --wheel --outdir build/dist
+
+  Publish:
+    if: github.event_name == 'push' && (github.ref == 'refs/heads/Dev' || github.ref == 'refs/heads/Prod')
+    needs: Build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+    - uses: actions/checkout@v4
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: "3.12"
+    - name: Build distribution packages
+      run: |
+        PYTHON_BIN="${pythonLocation:+$pythonLocation/bin/python}"
+        PYTHON_BIN="${PYTHON_BIN:-python}"
+        "$PYTHON_BIN" -m pip install --upgrade pip build
+        "$PYTHON_BIN" -m build build --sdist --wheel --outdir build/dist
+    - if: github.ref == 'refs/heads/Dev'
       uses: pypa/gh-action-pypi-publish@release/v1
       with:
         verbose: true
         packages-dir: build/dist
         repository-url: https://test.pypi.org/legacy
         attestations: false
-    - if: startsWith(github.ref, 'refs/heads/Prod')
+    - if: github.ref == 'refs/heads/Prod'
       uses: pypa/gh-action-pypi-publish@release/v1
       with:
         verbose: true
         packages-dir: build/dist
-
-  Version:
-    if: github.event.pull_request.pull_request.merged == true
-    runs-on: ubuntu-latest
-    permissions:
-      id-token: write
-      contents: read
-    steps:
-    - uses: qoomon/actions--access-token@v3
-      id: access-token
-      with:
-        repository: ${{ github.repository }}
-        permissions: |
-          contents: write
-    - uses: actions/checkout@v3
-      with:
-        token: ${{ steps.access-token.outputs.token }}
-    - name: Increment patch version
-      run: |
-        python - <<'PY'
-        import re, pathlib
-        p = pathlib.Path('build/setup.py')
-        text = p.read_text()
-        m = re.search(r'version="(\d+)\.(\d+)\.(\d+)"', text)
-        major, minor, patch = map(int, m.groups())
-        patch += 1
-        new_version=f"{major}.{minor}.{patch}"
-        new_text=re.sub(r'version="\d+\.\d+\.\d+"', f'version="{new_version}"', text)
-        p.write_text(new_text)
-        print(new_version)
-        PY
-    - name: Commit and push version bump
-      uses: stefanzweifel/git-auto-commit-action@v4
-      with:
-        commit_message: '#3 Bump version after merge of Exploration into Dev.'
-        branch: Dev
