@@ -60,7 +60,7 @@ class CaptchaSolver:
         self.backend = backend_cls(**kwargs)
         self.network_config: NetworkConfig = copy(DEFAULT_NETWORK_CONFIG)
 
-    def setup_network_config(self, timeout: None | int = None) -> None:
+    def setup_network_config(self, timeout: None | float = None) -> None:
         if timeout is not None:
             self.network_config["timeout"] = timeout
 

@@ -44,4 +44,4 @@ jobs:
         # pylint -j0 $(FILES)
         # flake8 -j auto --max-cognitive-complexity=17 $(FILES)
         # bandit -qc pyproject.toml -r $(FILES)
-        "$PYTHON_BIN" -m compileall -q "$FILES"
+        MYPYPATH=../src "$PYTHON_BIN" -m mypy --strict --explicit-package-bases "$FILES"

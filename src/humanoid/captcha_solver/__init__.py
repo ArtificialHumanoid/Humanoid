@@ -1,10 +1,14 @@
 # pylint: disable=wildcard-import
-from humanoid.captcha_solver.solver import CaptchaSolver
+import sys
+
+if sys.version_info >= (3, 8):
+    from importlib import metadata
+else:  # pragma: no cover - Python < 3.8
+    import importlib_metadata as metadata
+
 from humanoid.captcha_solver.error import *  # noqa
+from humanoid.captcha_solver.error import __all__ as _error_all
+from humanoid.captcha_solver.solver import CaptchaSolver
 
-try:
-    from importlib import metadata as importlib_metadata
-except ImportError:  # pragma: no cover - Python < 3.8
-    import importlib_metadata
-
-__version__ = importlib_metadata.version("Humanoid")
+__all__ = ("CaptchaSolver", *_error_all)
+__version__ = metadata.version("Humanoid")

@@ -35,3 +35,4 @@ mccabe
 mypy
 pep8-naming
 pylint
+types-requests
