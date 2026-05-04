@@ -2,13 +2,29 @@ from __future__ import annotations
 
 from base64 import b64encode
 from typing import Any
-from urllib.parse import urlencode, urljoin
 
+import requests
 from humanoid.captcha_solver.error import BalanceTooLow, CaptchaServiceError, ServiceTooBusy, SolutionNotReady
 from humanoid.captcha_solver.network import NetworkRequest, NetworkResponse
 from humanoid.captcha_solver.backend.base import ServiceBackend
 
 SOFTWARE_ID = 901
+
+
+def _service_endpoint_url(service_url: str, endpoint: str) -> str:
+    return f"{service_url.rstrip('/')}/{endpoint.lstrip('/')}"
+
+
+def _service_endpoint_url_with_params(
+    service_url: str,
+    endpoint: str,
+    params: dict[str, str],
+) -> str:
+    prepared = requests.Request(
+        "GET", _service_endpoint_url(service_url, endpoint), params=params
+    ).prepare()
+    assert prepared.url is not None
+    return prepared.url
 
 
 class AntigateBackend(ServiceBackend):
@@ -33,7 +49,7 @@ class AntigateBackend(ServiceBackend):
         }
         post.update(kwargs)
         assert self.service_url is not None
-        url = urljoin(self.service_url, "in.php")
+        url = _service_endpoint_url(self.service_url, "in.php")
         return {"url": url, "post_data": post}
 
     def parse_submit_captcha_response(self, res: NetworkResponse) -> str:
@@ -51,7 +67,7 @@ class AntigateBackend(ServiceBackend):
         assert self.api_key is not None
         assert self.service_url is not None
         params = {"key": self.api_key, "action": "get", "id": captcha_id}
-        url = urljoin(self.service_url, "res.php?%s" % urlencode(params))
+        url = _service_endpoint_url_with_params(self.service_url, "res.php", params)
         return {"url": url, "post_data": None}
 
     def parse_check_solution_response(self, res: NetworkResponse) -> str:

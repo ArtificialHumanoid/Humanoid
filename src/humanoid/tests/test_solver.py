@@ -66,6 +66,15 @@ class AntigateTestCase(BaseSolverTestCase):
         self.server.add_response(Response(data=b"OK|decoded_captcha"))
         self.assertEqual(self.solver.solve_captcha(b"image_data"), "decoded_captcha")
 
+    def test_check_solution_url_encodes_query_parameters(self) -> None:
+        solver = self.create_solver(api_key="key with space")
+        request_data = solver.backend.get_check_solution_request_data("captcha/id")
+        expected_url = (
+            f"{self.server.get_url()}/res.php?"
+            "key=key+with+space&action=get&id=captcha%2Fid"
+        )
+        assert request_data == {"url": expected_url, "post_data": None}
+
     def test_antigate_no_slot_available(self) -> None:
         self.server.add_response(Response(data=b"ERROR_NO_SLOT_AVAILABLE"), count=-1)
         with self.assertRaises(error.SolutionTimeoutError):
