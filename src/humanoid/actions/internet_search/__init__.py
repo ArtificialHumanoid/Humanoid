@@ -35,3 +35,6 @@ class HTTPAdapter(requests.adapters.HTTPAdapter):
         session = requests.session()
         session.mount("https://", cls(context))
         return session
+
+
+__all__ = ["HTTPAdapter"]

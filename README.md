@@ -17,40 +17,50 @@ pip install git+https://github.com/ArtificialHumanoid/Humanoid#subdirectory=buil
 Issues and, of course, pull requests, are tracked via GitHub.  
 Accordingly, all commit messages should be prefixed with “#” (followed by an issue or pull request numbered reference).
 
-# `googlesearch`
-googlesearch is a Python library for searching Google, easily. googlesearch uses requests and BeautifulSoup4 to scrape Google.
+# `humanoid.actions.internet_search`
+The internet search actions provide a Python interface for searching Google. They use requests and BeautifulSoup4 to scrape Google.
 
 
 ## Usage
-To get results for a search term, simply use the search function in googlesearch. For example, to get results for "Google" in Google, just run the following program:
+To get results for a search term, use the search function. For example, to get results for "Google" in Google, run the following program:
 ```python
-googlesearch.search("Google")
+from humanoid.actions.internet_search.google import search
+
+search("Google")
 ```
 
 ## Additional options
-By default, `googlesearch` returns 10 results. 
+By default, `search` returns 10 results.
 To get a 100 results on Google, for example:
 ```python
-googlesearch.search("Google", num_results=100)
+from humanoid.actions.internet_search.google import search
+
+search("Google", num_results=100)
 ```
 In addition, you can change the language Google searches in.
 For example, to get results in French run the following program:
 ```python
-googlesearch.search("Google", lang="fr")
+from humanoid.actions.internet_search.google import search
+
+search("Google", lang="fr")
 ```
 To extract more information, such as the description or the result URL, use an advanced search:
 ```python
-googlesearch.search("Google", advanced=True)
+from humanoid.actions.internet_search.google import search
+
+search("Google", advanced=True)
 ```
 which returns `List[SearchResult]` with each result having the properties
 - title
 - url
 - description.
 
-If requesting more than 100 results, googlesearch will send multiple requests to go through the pages.
+If requesting more than 100 results, `search` will send multiple requests to go through the pages.
 To increase the time between these requests, use sleep_interval:
 ```python
-googlesearch.search("Google", sleep_interval=5, num_results=200)
+from humanoid.actions.internet_search.google import search
+
+search("Google", sleep_interval=5, num_results=200)
 ```
 
 # `captcha_solver`

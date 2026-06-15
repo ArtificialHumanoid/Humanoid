@@ -11,7 +11,7 @@ import requests.exceptions
 from bs4 import BeautifulSoup
 
 from humanoid.credential_management import get_useragent
-from humanoid.internet_search import HTTPAdapter
+from humanoid.actions.internet_search import HTTPAdapter
 
 
 def _req(
