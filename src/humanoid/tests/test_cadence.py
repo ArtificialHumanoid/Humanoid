@@ -4,7 +4,11 @@ from typing import Iterator, List, Tuple
 from unittest import TestCase
 from unittest.mock import patch
 
-from humanoid.mimicry.cadence import random_sleep_between_lines
+from humanoid.mimicry.cadence import (
+    random_sleep_between_lines,
+    random_sleep_between_lines_disabled,
+    random_sleep_between_lines_enabled,
+)
 
 
 class CadenceTestCase(TestCase):
@@ -76,6 +80,46 @@ class CadenceTestCase(TestCase):
                 self.assertEqual(sample(), 2)
 
         self.assertEqual(len(durations), 1)
+
+    def test_disabled_context_suppresses_line_sleeps(self) -> None:
+        durations: List[float] = []
+
+        def fake_sleep(duration: float) -> None:
+            durations.append(duration)
+
+        @random_sleep_between_lines(0, 0)
+        def sample() -> int:
+            value = 1
+            value += 1
+            return value
+
+        with patch("humanoid.mimicry.cadence.uniform", return_value=0.0):
+            with patch("humanoid.mimicry.cadence.sleep", side_effect=fake_sleep):
+                with random_sleep_between_lines_disabled():
+                    self.assertEqual(sample(), 2)
+
+        self.assertEqual(durations, [])
+
+    def test_enabled_context_restores_line_sleeps_inside_disabled_context(self) -> None:
+        durations: List[float] = []
+
+        def fake_sleep(duration: float) -> None:
+            durations.append(duration)
+
+        @random_sleep_between_lines(0, 0)
+        def sample() -> int:
+            value = 1
+            value += 1
+            return value
+
+        with patch("humanoid.mimicry.cadence.uniform", return_value=0.0):
+            with patch("humanoid.mimicry.cadence.sleep", side_effect=fake_sleep):
+                with random_sleep_between_lines_disabled():
+                    with random_sleep_between_lines_enabled():
+                        self.assertEqual(sample(), 2)
+
+        self.assertTrue(durations)
+        self.assertEqual(set(durations), {0})
 
     def test_rejects_invalid_delay_bounds(self) -> None:
         with self.assertRaises(ValueError):

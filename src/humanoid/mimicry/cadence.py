@@ -1,14 +1,42 @@
 from __future__ import annotations
 
 import sys
+from contextlib import contextmanager
+from contextvars import ContextVar
 from functools import wraps
 from inspect import isasyncgenfunction, iscoroutinefunction, isgeneratorfunction
 from random import uniform
 from time import sleep
 from types import CodeType, FrameType
-from typing import Any, Callable, Optional, TypeVar, cast
+from typing import Any, Callable, Iterator, Optional, TypeVar, cast
 
 F = TypeVar("F", bound=Callable[..., Any])
+_random_sleep_between_lines_enabled: ContextVar[bool] = ContextVar(
+    "random_sleep_between_lines_enabled",
+    default=True,
+)
+
+
+@contextmanager
+def random_sleep_between_lines_disabled() -> Iterator[None]:
+    """Temporarily disable line-sleep cadence for deterministic modeled tests."""
+
+    token = _random_sleep_between_lines_enabled.set(False)
+    try:
+        yield
+    finally:
+        _random_sleep_between_lines_enabled.reset(token)
+
+
+@contextmanager
+def random_sleep_between_lines_enabled() -> Iterator[None]:
+    """Temporarily force line-sleep cadence on for live-use test contexts."""
+
+    token = _random_sleep_between_lines_enabled.set(True)
+    try:
+        yield
+    finally:
+        _random_sleep_between_lines_enabled.reset(token)
 
 
 def random_sleep_between_lines(
@@ -81,7 +109,7 @@ def random_sleep_between_lines(
                     if event == "line":
                         if first_line:
                             first_line = False
-                        else:
+                        elif _random_sleep_between_lines_enabled.get():
                             sleep(uniform(minimum_seconds, maximum_seconds))
                     return trace
 
