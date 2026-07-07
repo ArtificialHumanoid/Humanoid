@@ -5,6 +5,7 @@ from __future__ import annotations
 from humanoid.actions import (
     browser,
     captcha,
+    click,
     internet_search,
     loop,
     safety,
@@ -15,6 +16,7 @@ from humanoid.actions import (
 __all__ = [
     "browser",
     "captcha",
+    "click",
     "internet_search",
     "loop",
     "safety",
