@@ -63,6 +63,19 @@ from humanoid.actions.internet_search.google import search
 search("Google", sleep_interval=5, num_results=200)
 ```
 
+TLS certificate verification is enabled by default. A trusted environment that
+requires the legacy unverified connection path can disable verification:
+
+```python
+from humanoid.actions.internet_search.google import search
+
+search("Google", verify=False)
+```
+
+This still uses HTTPS, but it does not verify the server certificate. Requests
+may emit an insecure-request warning, and normal callers should leave
+verification enabled.
+
 # `captcha_solver`
 
 [![Run-Time Status](https://GitHub.Com/ArtificialHumanoid/Humanoid/actions/workflows/Tests.yml/badge.svg)](https://GitHub.Com/ArtificialHumanoid/Humanoid/actions/workflows/Tests.yml/badge.svg)

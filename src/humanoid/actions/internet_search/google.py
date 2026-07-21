@@ -3,7 +3,7 @@ from __future__ import annotations
 
 import re
 import warnings
-from collections.abc import Iterator
+from collections.abc import Callable, Iterator
 from time import sleep
 
 import requests
@@ -33,24 +33,17 @@ def _req(
         "start": start,
     }
 
-    if verify:
-        resp = requests.get(
-            url="https://www.google.com/search",
-            headers=headers,
-            params=params,
-            proxies=proxies,
-            timeout=timeout,
-            verify=verify,
-        )
-    else:
-        resp = HTTPAdapter.legacy_session().get(
-            url="https://www.google.com/search",
-            headers=headers,
-            params=params,
-            proxies=proxies,
-            timeout=timeout,
-            verify=verify,
-        )
+    request_get: Callable[..., requests.Response] = requests.get
+    if not verify:
+        request_get = HTTPAdapter.legacy_session().get
+    resp = request_get(
+        url="https://www.google.com/search",
+        headers=headers,
+        params=params,
+        proxies=proxies,
+        timeout=timeout,
+        verify=verify,
+    )
     resp.raise_for_status()
     return resp
 
@@ -83,7 +76,7 @@ def search(
     timeout: float = 5,
     verify: bool = True,
 ) -> Iterator[str | SearchResult]:
-    """Search via Google."""
+    """Search via Google, optionally disabling TLS certificate verification."""
     escaped_term = term
 
     # Proxy

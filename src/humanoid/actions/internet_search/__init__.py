@@ -6,6 +6,17 @@ from typing import Any
 import requests
 import urllib3
 
+_OP_LEGACY_SERVER_CONNECT = getattr(ssl, "OP_LEGACY_SERVER_CONNECT", 0x4)
+
+
+def _legacy_ssl_context() -> ssl.SSLContext:
+    """Construct an SSL context compatible with unverified legacy requests."""
+
+    context = ssl.create_default_context(ssl.Purpose.SERVER_AUTH)
+    context.options |= _OP_LEGACY_SERVER_CONNECT
+    context.check_hostname = False
+    return context
+
 
 class HTTPAdapter(requests.adapters.HTTPAdapter):
     """Adapt via `ssl_context`."""
@@ -30,10 +41,8 @@ class HTTPAdapter(requests.adapters.HTTPAdapter):
 
     @classmethod
     def legacy_session(cls) -> requests.Session:
-        context = ssl.create_default_context(ssl.Purpose.SERVER_AUTH)
-        context.options |= 0x4  # OP_LEGACY_SERVER_CONNECT
         session = requests.session()
-        session.mount("https://", cls(context))
+        session.mount("https://", cls(_legacy_ssl_context()))
         return session
 
 
